@@ -1,4 +1,4 @@
-import { mockConversation } from "../message/mock";
+import { mockConversation } from '../message/mock';
 
 export const getUser = async (userId) => {
   // use userId to get data from BE
@@ -7,8 +7,8 @@ export const getUser = async (userId) => {
     userId,
     conversations: [
       {
-        messages: mockConversation[0].None,
-      },
-    ],
+        messages: mockConversation[0].None
+      }
+    ]
   });
 };

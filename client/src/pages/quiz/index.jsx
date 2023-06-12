@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import { useLoaderData } from "react-router-dom";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import { sendMessage, startNewChat } from "../../api/message";
-import { getUser } from "../../api/user";
-import { ChatContainer } from "../../components/messages/ChatContainer";
-import { ImageNavigation } from "../../components/images/ImageNavigation";
+import React, { useState } from 'react';
+import { useLoaderData } from 'react-router-dom';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import { sendMessage, startNewChat } from '../../api/message';
+import { getUser } from '../../api/user';
+import { ChatContainer } from '../../components/messages/ChatContainer';
+import { ImageNavigation } from '../../components/images/ImageNavigation';
 
 export async function loader({ params }) {
   const user = await getUser(params.userId);
@@ -26,7 +26,7 @@ export const QuizPage = () => {
         images.push({
           src: message.src,
           conversation: index,
-          isActive: index === activeChat,
+          isActive: index === activeChat
         });
     });
   });
@@ -36,7 +36,7 @@ export const QuizPage = () => {
       const newUser = await startNewChat({
         userId: user.userId,
         conversationId: activeChat,
-        answer,
+        answer
       });
       setUser(newUser);
       setActiveChat(newUser.conversations.length - 1);
@@ -44,7 +44,7 @@ export const QuizPage = () => {
       const newUser = await sendMessage({
         userId: user.userId,
         conversationId: activeChat,
-        answer,
+        answer
       });
       setUser(newUser);
     }
@@ -54,7 +54,7 @@ export const QuizPage = () => {
     const newUser = await sendMessage({
       userId: user.userId,
       conversationId: activeChat,
-      answer: "Image",
+      answer: 'Image'
     });
     setUser(newUser);
   };
@@ -67,16 +67,15 @@ export const QuizPage = () => {
   return (
     <Box
       sx={{
-        height: "inherit",
-        display: "flex",
-        flexDirection: "column",
-        margin: "10px",
-      }}
-    >
+        height: 'inherit',
+        display: 'flex',
+        flexDirection: 'column',
+        margin: '10px'
+      }}>
       <h4>Your choices:</h4>
-      <Box sx={{ flexGrow: 1, height: "90%" }}>
-        <Grid container spacing={2} sx={{ height: "100%" }}>
-          <Grid item xs={10} sx={{ height: "inherit" }}>
+      <Box sx={{ flexGrow: 1, height: '90%' }}>
+        <Grid container spacing={2} sx={{ height: '100%' }}>
+          <Grid item xs={10} sx={{ height: 'inherit' }}>
             <ChatContainer
               conversation={activeConversation}
               onAnswer={handleAnswer}
@@ -86,19 +85,15 @@ export const QuizPage = () => {
           <Grid
             xs={2}
             sx={{
-              height: "inherit",
-              bgcolor: "#cfe8fc",
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
-              padding: "16px 0px",
-            }}
-          >
-            <ImageNavigation
-              images={images}
-              handleImageClick={updateActiveChat}
-            />
+              height: 'inherit',
+              bgcolor: '#cfe8fc',
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+              padding: '16px 0px'
+            }}>
+            <ImageNavigation images={images} handleImageClick={updateActiveChat} />
           </Grid>
         </Grid>
       </Box>

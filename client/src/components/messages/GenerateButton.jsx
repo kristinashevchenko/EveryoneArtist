@@ -1,18 +1,17 @@
-import React from "react";
-import PropTypes from "prop-types";
-import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
+import React from 'react';
+import PropTypes from 'prop-types';
+import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
 
 export const GenerateButton = ({ onClick }) => {
   return (
     <Box
       sx={{
-        height: "10%",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
+        height: '10%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+      }}>
       <Button variant="outlined" onClick={onClick}>
         Generate
       </Button>
@@ -21,5 +20,5 @@ export const GenerateButton = ({ onClick }) => {
 };
 
 GenerateButton.propTypes = {
-  onClick: PropTypes.func,
+  onClick: PropTypes.func
 };
