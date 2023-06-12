@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import Box from "@mui/material/Box";
-import { MessageQuestion } from "./MessageQuestion";
-import { MessageAnswer } from "./MessageAnswer";
-import { AnswerOptions } from "./AnswerOptions";
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import Box from '@mui/material/Box';
+import { MessageQuestion } from './MessageQuestion';
+import { MessageAnswer } from './MessageAnswer';
+import { AnswerOptions } from './AnswerOptions';
 
 export const MessageRow = ({ message, onAnswer }) => {
   const [isOpen, setIsOpen] = useState(!message.answer);
@@ -21,46 +21,38 @@ export const MessageRow = ({ message, onAnswer }) => {
     return (
       <Box
         sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "flex-start",
-          flexDirection: "column",
-        }}
-      >
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'flex-start',
+          flexDirection: 'column'
+        }}>
         <Box
           sx={{
-            height: "300px",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            marginTop: "8px",
-          }}
-        >
+            height: '300px',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginTop: '8px'
+          }}>
           <img
             src={`${message.src}?w=300&h=300&fit=crop&auto=format`}
             srcSet={`${message.src}?w=300&h=300&fit=crop&auto=format&dpr=2 2x`}
             loading="lazy"
-            style={{ height: "300px" }}
+            style={{ height: '300px' }}
           />
         </Box>
         <Box
           sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}>
           <MessageQuestion>{message.question}</MessageQuestion>
           <MessageAnswer disabled={!message.answer} onClick={handleAnswerClick}>
-            {message.answer || "Select answer"}
+            {message.answer || 'Select answer'}
           </MessageAnswer>
         </Box>
-        {
-          <AnswerOptions
-            options={message.options}
-            onSubmit={handleAnswerSubmit}
-          />
-        }
+        {<AnswerOptions options={message.options} onSubmit={handleAnswerSubmit} />}
       </Box>
     );
 
@@ -68,31 +60,24 @@ export const MessageRow = ({ message, onAnswer }) => {
     return (
       <Box
         sx={{
-          height: "20%",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "flex-start",
-          flexDirection: "column",
-        }}
-      >
+          height: '20%',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'flex-start',
+          flexDirection: 'column'
+        }}>
         <Box
           sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}>
           <MessageQuestion>{message.question}</MessageQuestion>
           <MessageAnswer disabled={!message.answer} onClick={handleAnswerClick}>
-            {message.answer || "Select answer"}
+            {message.answer || 'Select answer'}
           </MessageAnswer>
         </Box>
-        {
-          <AnswerOptions
-            options={message.options}
-            onSubmit={handleAnswerSubmit}
-          />
-        }
+        {<AnswerOptions options={message.options} onSubmit={handleAnswerSubmit} />}
       </Box>
     );
   }
@@ -100,17 +85,14 @@ export const MessageRow = ({ message, onAnswer }) => {
   return (
     <Box
       sx={{
-        height: "10%",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
+        height: '10%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+      }}>
       <MessageQuestion>{message.question}</MessageQuestion>
       {message.answer && (
-        <MessageAnswer onClick={handleAnswerClick}>
-          {message.answer}
-        </MessageAnswer>
+        <MessageAnswer onClick={handleAnswerClick}>{message.answer}</MessageAnswer>
       )}
     </Box>
   );
@@ -121,7 +103,7 @@ MessageRow.propTypes = {
     question: PropTypes.string,
     answer: PropTypes.string,
     src: PropTypes.string,
-    options: PropTypes.arrayOf(PropTypes.string),
+    options: PropTypes.arrayOf(PropTypes.string)
   }),
-  onAnswer: PropTypes.func,
+  onAnswer: PropTypes.func
 };

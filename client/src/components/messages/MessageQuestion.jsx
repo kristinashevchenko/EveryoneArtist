@@ -1,25 +1,24 @@
-import React from "react";
-import PropTypes from "prop-types";
-import Box from "@mui/material/Box";
+import React from 'react';
+import PropTypes from 'prop-types';
+import Box from '@mui/material/Box';
 
 export const MessageQuestion = ({ children }) => {
   return (
     <Box
       sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "#B4F2A5",
-        borderRadius: "20px",
-        padding: "10px",
-        marginRight: "15px",
-      }}
-    >
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#B4F2A5',
+        borderRadius: '20px',
+        padding: '10px',
+        marginRight: '15px'
+      }}>
       {children}
     </Box>
   );
 };
 
 MessageQuestion.propTypes = {
-  children: PropTypes.node,
+  children: PropTypes.node
 };

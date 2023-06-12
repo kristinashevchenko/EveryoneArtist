@@ -1,9 +1,9 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import "./App.css";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import './App.css';
 
 export const StartPage = () => {
-  const userId = "1";
+  const userId = '1';
 
   return (
     <div className="App">
