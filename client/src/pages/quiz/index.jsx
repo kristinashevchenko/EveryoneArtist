@@ -1,69 +1,35 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { useLoaderData } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import { sendMessage, startNewChat } from '../../api/message';
-import { getUser } from '../../api/user';
 import { ChatContainer } from '../../components/messages/ChatContainer';
 import { ImageNavigation } from '../../components/images/ImageNavigation';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  updateUser,
+  updateConversations
+} from '../../storage/reducers/conversation';
+import { getMessages } from '../../storage/session/utils';
 
 export async function loader({ params }) {
-  const user = await getUser(params.userId);
-  return { user };
+  const user = params.userId;
+  return user;
 }
 
 export const QuizPage = () => {
-  const { user: loadedUser } = useLoaderData();
-  const [activeChat, setActiveChat] = useState(0);
-  const [user, setUser] = useState(loadedUser);
+  const dispatch = useDispatch();
+  const user = useLoaderData();
+  const userId = useSelector((state) => state.conversations.userId);
 
-  const { conversations } = user;
-  const images = [];
-  conversations.forEach((conversation, index) => {
-    const { messages = [] } = conversation;
-    messages.forEach((message) => {
-      if (message.src)
-        images.push({
-          src: message.src,
-          conversation: index,
-          isActive: index === activeChat
-        });
-    });
-  });
-
-  const handleAnswer = async ({ answer, isNewChat }) => {
-    if (isNewChat) {
-      const newUser = await startNewChat({
-        userId: user.userId,
-        conversationId: activeChat,
-        answer
-      });
-      setUser(newUser);
-      setActiveChat(newUser.conversations.length - 1);
+  useEffect(() => {
+    if (userId) {
+      const conversations = getMessages({ userId });
+      dispatch(updateConversations(conversations));
     } else {
-      const newUser = await sendMessage({
-        userId: user.userId,
-        conversationId: activeChat,
-        answer
-      });
-      setUser(newUser);
+      dispatch(updateUser(user));
     }
-  };
+  }, [userId]);
 
-  const handleGenerate = async () => {
-    const newUser = await sendMessage({
-      userId: user.userId,
-      conversationId: activeChat,
-      answer: 'Image'
-    });
-    setUser(newUser);
-  };
-
-  const updateActiveChat = (index) => {
-    setActiveChat(index);
-  };
-
-  const activeConversation = user?.conversations[activeChat];
   return (
     <Box
       sx={{
@@ -76,11 +42,7 @@ export const QuizPage = () => {
       <Box sx={{ flexGrow: 1, height: '90%' }}>
         <Grid container spacing={2} sx={{ height: '100%' }}>
           <Grid item xs={10} sx={{ height: 'inherit' }}>
-            <ChatContainer
-              conversation={activeConversation}
-              onAnswer={handleAnswer}
-              onGenerate={handleGenerate}
-            />
+            <ChatContainer />
           </Grid>
           <Grid
             xs={2}
@@ -93,7 +55,7 @@ export const QuizPage = () => {
               alignItems: 'center',
               padding: '16px 0px'
             }}>
-            <ImageNavigation images={images} handleImageClick={updateActiveChat} />
+            <ImageNavigation />
           </Grid>
         </Grid>
       </Box>

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import { MessageRow } from './MessageRow';
 
-export const Messages = ({ messages, onAnswer }) => {
+export const Messages = ({ messages = [], onAnswer }) => {
   return (
     <Box
       sx={{
@@ -12,8 +12,13 @@ export const Messages = ({ messages, onAnswer }) => {
         flexDirection: 'column',
         alignItems: 'flex-start'
       }}>
-      {messages.map((message) => (
-        <MessageRow message={message} key={message.question} onAnswer={onAnswer} />
+      {messages.map((message, index) => (
+        <MessageRow
+          message={message}
+          key={message.question}
+          onAnswer={onAnswer}
+          questionIndex={index}
+        />
       ))}
     </Box>
   );
