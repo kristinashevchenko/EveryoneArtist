@@ -1,11 +1,30 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 import Box from '@mui/material/Box';
 import { GenerateButton } from './GenerateButton';
 import { Messages } from './Messages';
+import { generateImage } from '../../storage/reducers/image';
+import { sendMessage, forkChat } from '../../storage/reducers/conversation';
+import { selectMessages } from '../../storage/selectors';
 
-export const ChatContainer = ({ conversation, onAnswer, onGenerate }) => {
-  const { messages = [] } = conversation;
+export const ChatContainer = () => {
+  const dispatch = useDispatch();
+  const activeConversationId = useSelector(
+    (state) => state.conversations.activeConversationId
+  );
+  const messages = useSelector(selectMessages);
+  const onGenerate = () => {
+    dispatch(generateImage({ messages, conversationId: activeConversationId }));
+  };
+
+  const onAnswer = ({ answer, isNewChat, questionIndex }) => {
+    if (isNewChat) {
+      // start new chat
+      dispatch(forkChat({ answer, questionIndex, messages }));
+    } else {
+      dispatch(sendMessage({ answer, messages }));
+    }
+  };
 
   return (
     <Box sx={{ height: 'inherit' }}>
@@ -13,12 +32,4 @@ export const ChatContainer = ({ conversation, onAnswer, onGenerate }) => {
       <GenerateButton onClick={onGenerate} />
     </Box>
   );
-};
-
-ChatContainer.propTypes = {
-  conversation: PropTypes.shape({
-    messages: PropTypes.arrayOf(PropTypes.object)
-  }),
-  onGenerate: PropTypes.func,
-  onAnswer: PropTypes.func
 };

@@ -6,8 +6,8 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Input from '@mui/material/Input';
 
-export const AnswerOptions = ({ options, onSubmit }) => {
-  const [selected, setSelected] = useState(options[0]);
+export const AnswerChoices = ({ choices, onSubmit }) => {
+  const [selected, setSelected] = useState(choices[0]);
   const [text, setText] = useState('');
 
   const handleChange = (event, newValue) => {
@@ -37,13 +37,17 @@ export const AnswerOptions = ({ options, onSubmit }) => {
         exclusive
         onChange={handleChange}
         aria-label="Platform">
-        {options.map((option) => (
+        {choices.map((option) => (
           <ToggleButton key={option} value={option}>
             {option}
           </ToggleButton>
         ))}
       </ToggleButtonGroup>
-      <Input sx={{ marginLeft: '10px' }} value={text} onChange={handleInputChange} />
+      <Input
+        sx={{ marginLeft: '10px' }}
+        value={text}
+        onChange={handleInputChange}
+      />
       <Button
         onClick={handleSubmit}
         color="primary"
@@ -55,7 +59,7 @@ export const AnswerOptions = ({ options, onSubmit }) => {
   );
 };
 
-AnswerOptions.propTypes = {
-  options: PropTypes.arrayOf(PropTypes.string),
+AnswerChoices.propTypes = {
+  choices: PropTypes.arrayOf(PropTypes.string),
   onSubmit: PropTypes.func
 };
