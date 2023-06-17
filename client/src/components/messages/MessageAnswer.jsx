@@ -10,8 +10,12 @@ export const MessageAnswer = ({ children, disabled = false, onClick }) => {
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#F5D8FF',
-        borderRadius: '20px',
-        padding: '10px'
+        borderRadius: '15px',
+        padding: '10px',
+        height: '44px',
+        maxWidth: '200px',
+        textOverflow: 'ellipsis',
+        overflowWrap: 'break-word'
       }}
       disabled={disabled}
       onClick={onClick}>

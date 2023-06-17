@@ -1,6 +1,5 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Box from '@mui/material/Box';
 import { GenerateButton } from './GenerateButton';
 import { Messages } from './Messages';
 import { generateImage } from '../../storage/reducers/image';
@@ -27,9 +26,12 @@ export const ChatContainer = () => {
   };
 
   return (
-    <Box sx={{ height: 'inherit' }}>
+    <>
+      <div style={{ height: '4%', fontSize: '24px', margin: '10px' }}>
+        Your choices:
+      </div>
       <Messages messages={messages} onAnswer={onAnswer} />
       <GenerateButton onClick={onGenerate} />
-    </Box>
+    </>
   );
 };

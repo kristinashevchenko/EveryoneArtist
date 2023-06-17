@@ -19,7 +19,8 @@ export const ImageNavigation = () => {
     <ImageList
       sx={{
         height: 'inherit',
-        overflowX: 'hidden'
+        overflowX: 'hidden',
+        margin: 0
       }}
       gap={8}
       cols={1}
@@ -36,6 +37,7 @@ export const ImageNavigation = () => {
             src={`${image.imageUrl}?w=180&h=180&fit=crop&auto=format`}
             srcSet={`${image.imageUrl}?w=180&h=180&fit=crop&auto=format&dpr=2 2x`}
             alt={image.generatedPrompt}
+            title={image.generatedPrompt}
             loading="lazy"
           />
         </ImageListItem>
