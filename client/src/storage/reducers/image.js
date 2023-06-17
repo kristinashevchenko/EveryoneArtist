@@ -25,7 +25,8 @@ export const imageSlice = createSlice({
     builder
       .addCase(forkChat.fulfilled, (state) => {
         state.push({
-          imageUrl: 'dummy/url',
+          imageUrl:
+            'https://caracallacosmetici.com/wp-content/uploads/2019/03/no-img-placeholder.png',
           generatedPrompt: 'empty prompt'
         });
       })
@@ -34,7 +35,8 @@ export const imageSlice = createSlice({
         const conversations = action.payload;
         conversations.forEach((conversation) => {
           const item = {
-            imageUrl: 'dummy/url',
+            imageUrl:
+              'https://caracallacosmetici.com/wp-content/uploads/2019/03/no-img-placeholder.png',
             generatedPrompt: 'empty prompt'
           };
           for (let i = conversation.length - 1; i >= 0; i--) {

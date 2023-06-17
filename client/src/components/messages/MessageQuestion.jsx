@@ -10,9 +10,13 @@ export const MessageQuestion = ({ children }) => {
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#B4F2A5',
-        borderRadius: '20px',
+        borderRadius: '15px',
         padding: '10px',
-        marginRight: '15px'
+        height: '24px',
+        marginRight: '15px',
+        maxWidth: '500px',
+        textOverflow: 'ellipsis',
+        overflowWrap: 'break-word'
       }}>
       {children}
     </Box>

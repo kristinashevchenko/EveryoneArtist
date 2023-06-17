@@ -1,0 +1,52 @@
+#scrollbar::-webkit-scrollbar {
+    width: 10px;
+}
+
+#scrollbar::-webkit-scrollbar-track {
+    border-radius: 8px;
+    background-color: #e7e7e7;
+    border: 1px solid #cacaca;
+}
+
+#scrollbar::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    background-color: #96d647;
+}
+
+.MuiToggleButton-root.choice-button {
+    border-radius: 40px !important;
+    border: 2px solid #6A368A !important;
+}
+
+.MuiToggleButton-root.choice-button.Mui-selected {
+    background-color: #6A368A;
+    color: white;
+}
+
+.MuiToggleButton-root.choice-button:hover {
+    background-color: #52256e;
+    color: white;
+}
+
+.MuiToggleButton-root.choice-button.Mui-selected:hover {
+    background-color: #52256e;
+    color: white;
+}
+
+.MuiInput-root.choice-input:before {
+    border-bottom: 2px solid #6A368A !important;
+}
+
+.MuiInput-root.choice-input:after {
+    border-bottom: 2px solid #52256e !important;
+}
+
+.MuiButton-root.submit-choice {
+    color: #6A368A !important;
+    border-color: #6A368A !important;
+}
+
+.MuiButton-root.generate-button:hover {
+    background-color: #52256e;
+    color: white;
+}

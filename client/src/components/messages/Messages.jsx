@@ -2,16 +2,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import { MessageRow } from './MessageRow';
+import './styles.css';
 
 export const Messages = ({ messages = [], onAnswer }) => {
   return (
     <Box
       sx={{
-        height: '90%',
+        height: '86%',
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'flex-start'
-      }}>
+        alignItems: 'flex-start',
+        overflowY: 'auto'
+      }}
+      id="scrollbar">
       {messages.map((message, index) => (
         <MessageRow
           message={message}
