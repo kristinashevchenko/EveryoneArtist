@@ -1,8 +1,10 @@
 import openai.error
+from flask_cors import CORS
 from flask import Flask, request, jsonify
 import open_ai_api
 
 app = Flask(__name__)
+CORS(app)
 
 
 @app.route("/quiz/answer", methods=['POST'])
@@ -12,7 +14,7 @@ def quiz_answer():
     return jsonify(modified_quiz)
 
 
-@app.route("/quiz/generate", methods=['GET'])
+@app.route("/quiz/generate", methods=['POST'])
 def quiz_generate():
     quiz = request.get_json()
     generated_data = open_ai_api.quiz_generate_image(quiz)
