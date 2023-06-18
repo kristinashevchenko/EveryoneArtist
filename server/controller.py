@@ -1,3 +1,4 @@
+import openai.error
 from flask import Flask, request, jsonify
 import open_ai_api
 
@@ -16,6 +17,11 @@ def quiz_generate():
     quiz = request.get_json()
     generated_data = open_ai_api.quiz_generate_image(quiz)
     return jsonify(generated_data)
+
+
+@app.errorhandler(openai.error.OpenAIError)
+def handle_openai_error(e):
+    return f"Error with OpenAI: {e}", 500
 
 
 if __name__ == '__main__':
