@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { forkChat, updateConversations } from './conversation';
+import { forkChat, startChat, updateConversations } from './conversation';
 import imageApi from '../../api/image';
 
 const initialState = [];
@@ -11,7 +11,7 @@ export const generateImage = createAsyncThunk(
 
     return {
       imageUrl: response.imageUrl,
-      generatedPrompt: response.generatedPrompt,
+      generatedPrompt: response.prompt,
       conversationId
     };
   }
@@ -24,6 +24,13 @@ export const imageSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(forkChat.fulfilled, (state) => {
+        state.push({
+          imageUrl:
+            'https://caracallacosmetici.com/wp-content/uploads/2019/03/no-img-placeholder.png',
+          generatedPrompt: 'empty prompt'
+        });
+      })
+      .addCase(startChat.fulfilled, (state) => {
         state.push({
           imageUrl:
             'https://caracallacosmetici.com/wp-content/uploads/2019/03/no-img-placeholder.png',

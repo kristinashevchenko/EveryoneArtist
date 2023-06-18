@@ -7,5 +7,5 @@ export const setMessages = ({ messages, userId }) => {
 
 export const getMessages = ({ userId }) => {
   const messages = window.sessionStorage.getItem(`artist-messages-${userId}`);
-  return JSON.parse(messages);
+  return JSON.parse(messages) || [];
 };

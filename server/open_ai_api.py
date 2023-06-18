@@ -40,9 +40,7 @@ def quiz_next_turn(quiz: list[dict]) -> list:
         "answer": None
     }
 
-    quiz.append(next_conversation_element)
-
-    return quiz
+    return next_conversation_element
 
 
 def quiz_generate_image(quiz: list[dict]) -> dict:
