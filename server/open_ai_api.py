@@ -20,7 +20,7 @@ def quiz_next_turn(quiz: list[dict]) -> list:
         question = str(elem['question']) + "\n" + "|".join(elem["choices"])
         messages.append({"role": "assistant", "content": question})
 
-        if elem['answer']:
+        if elem.get('answer', False):
             messages.append({"role": "user", "content": str(elem['answer'])})
 
     response = openai.ChatCompletion.create(
@@ -65,5 +65,5 @@ def quiz_generate_image(quiz: list[dict]) -> dict:
 
 
 def quiz_generate_prompt(quiz: list[dict]) -> str:
-    answer_list = [elem['answer'] for elem in quiz]
+    answer_list = [elem.get('answer', None) for elem in quiz if elem.get('answer', None) is not None]
     return " ".join(answer_list)
