@@ -10,8 +10,12 @@ CORS(app)
 @app.route("/quiz/answer", methods=['POST'])
 def quiz_answer():
     quiz = request.get_json()
-    modified_quiz = open_ai_api.quiz_next_turn(quiz)
-    return jsonify(modified_quiz)
+    next_element_or_false = open_ai_api.quiz_next_turn(quiz)
+
+    if next_element_or_false:
+        return jsonify(next_element_or_false)
+    else:
+        return "", 500
 
 
 @app.route("/quiz/generate", methods=['POST'])
@@ -27,4 +31,4 @@ def handle_openai_error(e):
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
