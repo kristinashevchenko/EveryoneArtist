@@ -60,8 +60,8 @@ export const MessageRow = ({ message, onAnswer, questionIndex }) => {
             marginBottom: '8px'
           }}>
           <img
-            src={`${message.imageUrl}?w=300&h=300&fit=crop&auto=format`}
-            srcSet={`${message.imageUrl}?w=300&h=300&fit=crop&auto=format&dpr=2 2x`}
+            src={message.imageUrl}
+            srcSet={message.imageUrl}
             loading="lazy"
             style={{
               height: '300px',
