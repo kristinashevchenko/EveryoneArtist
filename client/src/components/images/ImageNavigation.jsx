@@ -34,8 +34,8 @@ export const ImageNavigation = () => {
           }}
           onClick={() => handleImageClick(index)}>
           <img
-            src={`${image.imageUrl}?w=180&h=180&fit=crop&auto=format`}
-            srcSet={`${image.imageUrl}?w=180&h=180&fit=crop&auto=format&dpr=2 2x`}
+            src={image.imageUrl}
+            srcSet={image.imageUrl}
             alt={image.generatedPrompt}
             title={image.generatedPrompt}
             loading="lazy"
