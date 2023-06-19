@@ -52,12 +52,17 @@ export const MessageRow = ({ message, onAnswer, questionIndex }) => {
         )}
         <Box
           sx={{
-            height: '300px',
+            width: '310px',
             display: 'flex',
+            flexDirection: 'column',
             justifyContent: 'center',
-            alignItems: 'center',
+            alignItems: 'flex-start',
+            flexBasis: 'content',
             marginTop: '8px',
-            marginBottom: '8px'
+            marginBottom: '8px',
+            backgroundColor: '#B4F2A5',
+            border: '4px solid #B4F2A5',
+            borderRadius: '10px'
           }}>
           <img
             src={message.imageUrl}
@@ -65,10 +70,10 @@ export const MessageRow = ({ message, onAnswer, questionIndex }) => {
             loading="lazy"
             style={{
               height: '300px',
-              border: '4px solid #B4F2A5',
-              borderRadius: '10px'
+              margin: 5
             }}
           />
+          <span style={{ marginLeft: 5 }}>{message.generatedPrompt}</span>
         </Box>
       </Box>
     );
@@ -120,7 +125,8 @@ MessageRow.propTypes = {
     question: PropTypes.string,
     answer: PropTypes.string,
     imageUrl: PropTypes.string,
-    choices: PropTypes.arrayOf(PropTypes.string)
+    choices: PropTypes.arrayOf(PropTypes.string),
+    generatedPrompt: PropTypes.string
   }),
   onAnswer: PropTypes.func,
   questionIndex: PropTypes.number
