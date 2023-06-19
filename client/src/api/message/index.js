@@ -20,8 +20,13 @@ export const sendMessage = async ({ answer, messages }) => {
 };
 
 export const forkChat = async ({ answer, messages, questionIndex }) => {
-  const newMessages = cloneDeep(messages.slice(0, questionIndex + 1));
+  let newMessages = cloneDeep(messages.slice(0, questionIndex + 1));
   newMessages[questionIndex].answer = answer;
+  newMessages = newMessages.map((message) => ({
+    ...message,
+    imageUrl: '',
+    generatedPrompt: ''
+  }));
 
   const { data } = await axios.post(
     `${API_URL}/quiz/answer`,
