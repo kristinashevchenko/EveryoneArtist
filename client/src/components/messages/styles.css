@@ -33,12 +33,33 @@
     color: white;
 }
 
-.MuiInput-root.choice-input:before {
-    border-bottom: 2px solid #6A368A !important;
+.MuiToggleButton-root.choice-button.Mui-selected .choice-input:before,
+.MuiToggleButton-root.choice-button.Mui-selected .choice-input:after,
+.MuiToggleButton-root.choice-button:hover .choice-input:before,
+.MuiToggleButton-root.choice-button:hover .choice-input:after {
+    border-bottom: 2px solid white !important;
 }
 
+.MuiToggleButton-root.choice-button.Mui-selected .choice-input,
+.MuiToggleButton-root.choice-button:hover .choice-input {
+    color: white !important;
+}
+
+.MuiToggleButton-root.choice-button.Mui-selected .choice-input ::placeholder,
+.MuiToggleButton-root.choice-button:hover .choice-input ::placeholder {
+    color: white !important;
+    opacity: 0.5;
+}
+
+.MuiInput-root.choice-input ::placeholder {
+    color: rgba(0, 0, 0, 0.54);
+    font-weight: 500;
+    opacity: 1;
+}
+
+.MuiInput-root.choice-input:before,
 .MuiInput-root.choice-input:after {
-    border-bottom: 2px solid #52256e !important;
+    border-bottom: 2px solid #6A368A !important;
 }
 
 .MuiButton-root.submit-choice {

@@ -8,6 +8,7 @@ import Input from '@mui/material/Input';
 import './styles.css';
 
 const DONT_KNOW = "Don't know";
+const OTHER = "Other";
 
 const choiceButton = {
   backgroundColor: 'rgba(190, 198, 255, 0.44)'
@@ -25,6 +26,7 @@ export const AnswerChoices = ({ choices, onSubmit, answer = '' }) => {
 
   const handleInputChange = (event) => {
     setText(event.target.value);
+    setSelected(OTHER);
   };
 
   const handleSubmit = () => {
@@ -62,13 +64,19 @@ export const AnswerChoices = ({ choices, onSubmit, answer = '' }) => {
           sx={choiceButton}>
           {DONT_KNOW}
         </ToggleButton>
+        <ToggleButton
+        className="choice-button"
+        sx={choiceButton}
+        value={OTHER}>
+            <Input
+                className="choice-input"
+                sx={{ marginLeft: '10px' }}
+                value={text}
+                placeholder="Other"
+                onChange={handleInputChange}
+            />
+        </ToggleButton>
       </ToggleButtonGroup>
-      <Input
-        className="choice-input"
-        sx={{ marginLeft: '10px' }}
-        value={text}
-        onChange={handleInputChange}
-      />
       <Button
         onClick={handleSubmit}
         color="primary"
