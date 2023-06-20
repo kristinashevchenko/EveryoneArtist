@@ -8,11 +8,12 @@ export const Messages = ({ messages = [], onAnswer }) => {
   return (
     <Box
       sx={{
-        height: '86%',
+        height: '75%',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'flex-start',
-        overflowY: 'auto'
+        overflowY: 'auto',
+          marginTop: 2
       }}
       id="scrollbar">
       {messages.map((message, index) => (

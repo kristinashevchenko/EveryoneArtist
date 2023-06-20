@@ -9,6 +9,7 @@ import {
   updateConversations
 } from '../../storage/reducers/conversation';
 import { getMessages } from '../../storage/session/utils';
+import {AppBar, Toolbar, Typography} from "@mui/material";
 
 export async function loader({ params }) {
   const user = params.userId;
@@ -36,6 +37,11 @@ export const QuizPage = () => {
         display: 'flex',
         flexDirection: 'column'
       }}>
+        <AppBar position="static" sx={{ backgroundColor: '#7230C7' }}>
+            <Toolbar>
+                <Typography variant="h6">EveryoneArtist</Typography>
+            </Toolbar>
+        </AppBar>
       <Box
         display="grid"
         gridTemplateColumns="repeat(12, 1fr)"
