@@ -30,7 +30,8 @@ export const ImageNavigation = () => {
           key={image.imageUrl}
           sx={{
             width: '180px',
-            border: index === activeConversationId ? '4px solid #8034eb' : '0px'
+            border: index === activeConversationId ? '4px solid #8034eb' : '0px',
+              margin: 2
           }}
           onClick={() => handleImageClick(index)}>
           <img

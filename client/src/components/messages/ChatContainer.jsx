@@ -27,9 +27,6 @@ export const ChatContainer = () => {
 
   return (
     <>
-      <div style={{ height: '4%', fontSize: '24px', margin: '10px' }}>
-        EveryoneArtist
-      </div>
       <Messages messages={messages} onAnswer={onAnswer} />
       <GenerateButton onClick={onGenerate} />
     </>
