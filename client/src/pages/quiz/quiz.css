@@ -1,0 +1,3 @@
+.MuiInputBase-root.mode-select.Mui-focused:after {
+    border-bottom: 1px solid white;
+}

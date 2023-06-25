@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
-import { STATES } from '../../api/constants/messageState';
+import { STATES } from '../../api/constants/states';
 import { MessageLoading } from './MessageLoading';
 import { MessageError } from './MessageError';
 import { MessageRow } from './MessageRow';
