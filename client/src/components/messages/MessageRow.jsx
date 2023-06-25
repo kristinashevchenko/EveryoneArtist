@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
+import DownloadForOfflineIcon from '@mui/icons-material/DownloadForOffline' 
+import { IconButton } from '@mui/material';
+import { saveAs } from "file-saver";
 import { MessageQuestion } from './MessageQuestion';
 import { MessageAnswer } from './MessageAnswer';
 import { AnswerChoices } from './AnswerChoices';
@@ -37,6 +40,10 @@ export const MessageRow = ({
   const handleGenerate = () => {
     onGenerate(questionIndex);
   };
+
+  const handleDownloadClick = () => {
+    saveAs(imageUrl, "filename");
+  }
 
   if (imageUrl)
     return (
@@ -78,7 +85,8 @@ export const MessageRow = ({
             marginBottom: '8px',
             backgroundColor: '#B4F2A5',
             border: '4px solid #B4F2A5',
-            borderRadius: '10px'
+            borderRadius: '10px',
+            position: 'relative'
           }}>
           <img
             src={imageUrl}
@@ -89,6 +97,17 @@ export const MessageRow = ({
               margin: 5
             }}
           />
+          <IconButton
+            sx={{ color: 'rgba(255, 255, 255, 0.8)' }}
+            onClick={handleDownloadClick}
+            style={{
+              position: 'absolute',
+              top: 10,
+              right: 10,
+            }}>
+              <DownloadForOfflineIcon/>
+            </IconButton>
+
           <span style={{ marginLeft: 5 }}>{message.generatedPrompt}</span>
         </Box>
       </Box>
