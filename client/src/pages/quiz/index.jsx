@@ -46,7 +46,8 @@ export const QuizPage = () => {
       sx={{
         height: 'inherit',
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        overflow: 'hidden'
       }}>
       <AppBar
         position="static"
@@ -89,7 +90,6 @@ export const QuizPage = () => {
       <Box
         display="grid"
         gridTemplateColumns="repeat(12, 1fr)"
-        gap={2}
         sx={{ height: 'calc(100% - 64px)' }}>
         <Box
           gridColumn="span 10"
