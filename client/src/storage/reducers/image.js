@@ -6,13 +6,18 @@ const initialState = [];
 
 export const generateImage = createAsyncThunk(
   'images/generateImage',
-  async ({ conversationId, messages }) => {
-    const response = await imageApi.generateImage({ conversationId, messages });
+  async ({ conversationId, messages, questionIndex }) => {
+    const response = await imageApi.generateImage({
+      conversationId,
+      messages,
+      questionIndex
+    });
 
     return {
       imageUrl: response.imageUrl,
       generatedPrompt: response.prompt,
-      conversationId
+      conversationId,
+      questionIndex
     };
   }
 );
@@ -23,17 +28,15 @@ export const imageSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(forkChat.fulfilled, (state) => {
+      .addCase(forkChat.pending, (state) => {
         state.push({
-          imageUrl:
-            'https://caracallacosmetici.com/wp-content/uploads/2019/03/no-img-placeholder.png',
+          imageUrl: '',
           generatedPrompt: 'empty prompt'
         });
       })
       .addCase(startChat.fulfilled, (state) => {
         state.push({
-          imageUrl:
-            'https://caracallacosmetici.com/wp-content/uploads/2019/03/no-img-placeholder.png',
+          imageUrl: '',
           generatedPrompt: 'empty prompt'
         });
       })
@@ -42,8 +45,7 @@ export const imageSlice = createSlice({
         const conversations = action.payload;
         conversations.forEach((conversation) => {
           const item = {
-            imageUrl:
-              'https://caracallacosmetici.com/wp-content/uploads/2019/03/no-img-placeholder.png',
+            imageUrl: '',
             generatedPrompt: 'empty prompt'
           };
           for (let i = conversation.length - 1; i >= 0; i--) {

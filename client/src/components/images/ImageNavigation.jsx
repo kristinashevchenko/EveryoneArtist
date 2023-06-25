@@ -3,6 +3,7 @@ import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateActiveConversation } from '../../storage/reducers/conversation';
+import DefaultImage from './no_image.jpg';
 
 export const ImageNavigation = () => {
   const dispatch = useDispatch();
@@ -30,13 +31,14 @@ export const ImageNavigation = () => {
           key={image.imageUrl}
           sx={{
             width: '180px',
-            border: index === activeConversationId ? '4px solid #8034eb' : '0px',
-              margin: 2
+            border:
+              index === activeConversationId ? '4px solid #8034eb' : '0px',
+            margin: 2
           }}
           onClick={() => handleImageClick(index)}>
           <img
-            src={image.imageUrl}
-            srcSet={image.imageUrl}
+            src={image.imageUrl || DefaultImage}
+            srcSet={image.imageUrl || DefaultImage}
             alt={image.generatedPrompt}
             title={image.generatedPrompt}
             loading="lazy"

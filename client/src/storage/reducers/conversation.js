@@ -2,18 +2,19 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { generateImage } from './image';
 import api from '../../api/message';
 import { setMessages } from '../session/utils';
+import { STATES } from '../../api/constants/messageState';
 
 const initialState = {
   userId: '',
   activeConversationId: 0,
-  conversations: []
+  conversations: [],
+  appState: ''
 };
 
 export const sendMessage = createAsyncThunk(
   'conversations/sendMessage',
   async (action) => {
     const { answer, messages } = action;
-    // send answer only for mocking
     const response = await api.sendMessage({ answer, messages });
     return response;
   }
@@ -56,38 +57,73 @@ export const conversationSlice = createSlice({
         const activeConversation =
           state.conversations[state.activeConversationId];
         activeConversation[activeConversation.length - 1].answer = answer;
+        activeConversation[activeConversation.length - 1].state =
+          STATES.LOADING;
       })
       .addCase(sendMessage.fulfilled, (state, action) => {
         const newMessage = action.payload;
         const activeConversation =
           state.conversations[state.activeConversationId];
+        activeConversation[activeConversation.length - 1].state = STATES.READY;
         activeConversation.push(newMessage);
         setMessages({ messages: state.conversations, userId: state.userId });
       })
-      .addCase(generateImage.fulfilled, (state, action) => {
-        const { imageUrl, generatedPrompt } = action.payload;
+      .addCase(sendMessage.rejected, (state) => {
         const activeConversation =
           state.conversations[state.activeConversationId];
-        activeConversation[activeConversation.length - 2].imageUrl = imageUrl;
-        activeConversation[activeConversation.length - 2].generatedPrompt =
-          generatedPrompt;
+        activeConversation[activeConversation.length - 1].state = STATES.ERROR;
+      })
+      .addCase(generateImage.pending, (state, action) => {
+        const { questionIndex, conversationId } = action.meta.arg;
+        const activeConversation = state.conversations[conversationId];
+        activeConversation[questionIndex].state = STATES.LOADING;
+      })
+      .addCase(generateImage.rejected, (state, action) => {
+        const { questionIndex } = action.meta.arg;
+        const activeConversation =
+          state.conversations[state.activeConversationId];
+        activeConversation[questionIndex].state = STATES.ERROR;
+      })
+      .addCase(generateImage.fulfilled, (state, action) => {
+        const { imageUrl, generatedPrompt, questionIndex } = action.payload;
+        const activeConversation =
+          state.conversations[state.activeConversationId];
+        activeConversation[questionIndex].imageUrl = imageUrl;
+        activeConversation[questionIndex].generatedPrompt = generatedPrompt;
+        activeConversation[questionIndex].state = STATES.READY;
         setMessages({ messages: state.conversations, userId: state.userId });
+      })
+      .addCase(forkChat.pending, (state) => {
+        state.conversations.push([]);
+        state.activeConversationId = state.conversations.length - 1;
+        state.appState = STATES.LOADING;
+      })
+      .addCase(forkChat.rejected, (state) => {
+        state.appState = STATES.ERROR;
       })
       .addCase(forkChat.fulfilled, (state, action) => {
         const newConversation = action.payload;
-        state.conversations.push(newConversation);
-        state.activeConversationId = state.conversations.length - 1;
+        state.conversations[state.activeConversationId] =
+          state.conversations[state.activeConversationId].concat(
+            newConversation
+          );
+        state.appState = STATES.READY;
         setMessages({ messages: state.conversations, userId: state.userId });
       })
       .addCase(startChat.pending, (state, action) => {
         const { userId } = action.meta.arg;
         state.userId = userId;
+        state.appState = STATES.LOADING;
+      })
+      .addCase(startChat.rejected, (state) => {
+        state.appState = STATES.ERROR;
       })
       .addCase(startChat.fulfilled, (state, action) => {
         const newMessage = action.payload;
         const newConversation = [newMessage];
         state.conversations.push(newConversation);
         state.activeConversationId = state.conversations.length - 1;
+        state.appState = STATES.READY;
         setMessages({ messages: state.conversations, userId: state.userId });
       });
   }

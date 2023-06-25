@@ -1,6 +1,5 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { GenerateButton } from './GenerateButton';
 import { Messages } from './Messages';
 import { generateImage } from '../../storage/reducers/image';
 import { sendMessage, forkChat } from '../../storage/reducers/conversation';
@@ -11,9 +10,16 @@ export const ChatContainer = () => {
   const activeConversationId = useSelector(
     (state) => state.conversations.activeConversationId
   );
+  const appState = useSelector((state) => state.conversations.appState);
   const messages = useSelector(selectMessages);
-  const onGenerate = () => {
-    dispatch(generateImage({ messages, conversationId: activeConversationId }));
+  const onGenerate = (questionIndex) => {
+    dispatch(
+      generateImage({
+        messages,
+        conversationId: activeConversationId,
+        questionIndex
+      })
+    );
   };
 
   const onAnswer = ({ answer, isNewChat, questionIndex }) => {
@@ -26,9 +32,11 @@ export const ChatContainer = () => {
   };
 
   return (
-    <>
-      <Messages messages={messages} onAnswer={onAnswer} />
-      <GenerateButton onClick={onGenerate} />
-    </>
+    <Messages
+      appState={appState}
+      messages={messages}
+      onAnswer={onAnswer}
+      onGenerate={onGenerate}
+    />
   );
 };
