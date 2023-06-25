@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import DownloadForOfflineIcon from '@mui/icons-material/DownloadForOffline' 
 import { IconButton } from '@mui/material';
+import { saveAs } from "file-saver";
 import { MessageQuestion } from './MessageQuestion';
 import { MessageAnswer } from './MessageAnswer';
 import { AnswerChoices } from './AnswerChoices';
