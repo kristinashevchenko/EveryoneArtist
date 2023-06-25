@@ -2,13 +2,12 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { generateImage } from './image';
 import api from '../../api/message';
 import { setMessages } from '../session/utils';
-import { STATES } from '../../api/constants/messageState';
+import { STATES } from '../../api/constants/states';
 
 const initialState = {
   userId: '',
   activeConversationId: 0,
-  conversations: [],
-  appState: ''
+  conversations: []
 };
 
 export const sendMessage = createAsyncThunk(
@@ -48,6 +47,12 @@ export const conversationSlice = createSlice({
     },
     updateConversations: (state, action) => {
       state.conversations = action.payload;
+    },
+    updateChat: (state, action) => {
+      const { questionIndex, answer } = action.payload;
+      state.conversations[state.activeConversationId][questionIndex].answer =
+        answer;
+      setMessages({ messages: state.conversations, userId: state.userId });
     }
   },
   extraReducers: (builder) => {
@@ -96,10 +101,6 @@ export const conversationSlice = createSlice({
       .addCase(forkChat.pending, (state) => {
         state.conversations.push([]);
         state.activeConversationId = state.conversations.length - 1;
-        state.appState = STATES.LOADING;
-      })
-      .addCase(forkChat.rejected, (state) => {
-        state.appState = STATES.ERROR;
       })
       .addCase(forkChat.fulfilled, (state, action) => {
         const newConversation = action.payload;
@@ -107,29 +108,27 @@ export const conversationSlice = createSlice({
           state.conversations[state.activeConversationId].concat(
             newConversation
           );
-        state.appState = STATES.READY;
         setMessages({ messages: state.conversations, userId: state.userId });
       })
       .addCase(startChat.pending, (state, action) => {
         const { userId } = action.meta.arg;
         state.userId = userId;
-        state.appState = STATES.LOADING;
-      })
-      .addCase(startChat.rejected, (state) => {
-        state.appState = STATES.ERROR;
       })
       .addCase(startChat.fulfilled, (state, action) => {
         const newMessage = action.payload;
         const newConversation = [newMessage];
         state.conversations.push(newConversation);
         state.activeConversationId = state.conversations.length - 1;
-        state.appState = STATES.READY;
         setMessages({ messages: state.conversations, userId: state.userId });
       });
   }
 });
 
-export const { updateActiveConversation, updateUser, updateConversations } =
-  conversationSlice.actions;
+export const {
+  updateActiveConversation,
+  updateUser,
+  updateConversations,
+  updateChat
+} = conversationSlice.actions;
 
 export default conversationSlice.reducer;

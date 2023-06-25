@@ -1,6 +1,10 @@
 import React, { useEffect } from 'react';
 import { useLoaderData } from 'react-router-dom';
 import Box from '@mui/material/Box';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import { AppBar, Toolbar, Typography } from '@mui/material';
 import { ChatContainer } from '../../components/messages/ChatContainer';
 import { ImageNavigation } from '../../components/images/ImageNavigation';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,7 +13,9 @@ import {
   updateConversations
 } from '../../storage/reducers/conversation';
 import { getMessages } from '../../storage/session/utils';
-import { AppBar, Toolbar, Typography } from '@mui/material';
+import { MODES } from '../../api/constants/modes';
+import './quiz.css';
+import { updateMode } from '../../storage/reducers/app';
 
 export async function loader({ params }) {
   const user = params.userId;
@@ -20,6 +26,7 @@ export const QuizPage = () => {
   const dispatch = useDispatch();
   const user = useLoaderData();
   const userId = useSelector((state) => state.conversations.userId);
+  const mode = useSelector((state) => state.app.mode);
 
   useEffect(() => {
     if (userId) {
@@ -30,6 +37,10 @@ export const QuizPage = () => {
     }
   }, [userId]);
 
+  const handleModeChange = (event) => {
+    dispatch(updateMode({ mode: event.target.value }));
+  };
+
   return (
     <Box
       sx={{
@@ -39,9 +50,40 @@ export const QuizPage = () => {
       }}>
       <AppBar
         position="static"
-        sx={{ backgroundColor: '#7230C7', height: '64px' }}>
-        <Toolbar>
+        sx={{
+          backgroundColor: '#7230C7',
+          height: '64px'
+        }}>
+        <Toolbar
+          sx={{
+            justifyContent: 'space-between'
+          }}>
           <Typography variant="h6">EveryoneArtist</Typography>
+          <FormControl
+            variant="standard"
+            sx={{
+              m: 1,
+              minWidth: 120,
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              columnGap: '10px'
+            }}>
+            <div>Mode</div>
+            <Select
+              labelId="mode-select-label"
+              id="mode-select"
+              value={mode}
+              onChange={handleModeChange}
+              sx={{ color: 'white' }}
+              className="mode-select"
+              label="Mode">
+              <MenuItem value={MODES.DESTRUCTIVE_MODE}>
+                {MODES.DESTRUCTIVE_MODE}
+              </MenuItem>
+              <MenuItem value={MODES.CHANGE_MODE}>{MODES.CHANGE_MODE}</MenuItem>
+            </Select>
+          </FormControl>
         </Toolbar>
       </AppBar>
       <Box

@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import { MessageQuestion } from './MessageQuestion';
 import { MessageAnswer } from './MessageAnswer';
 import { AnswerChoices } from './AnswerChoices';
-import { STATES } from '../../api/constants/messageState';
+import { STATES } from '../../api/constants/states';
 import { MessageLoading } from './MessageLoading';
 import { MessageError } from './MessageError';
 
@@ -29,8 +29,8 @@ export const MessageRow = ({
   };
 
   const handleAnswerSubmit = (submittedAnswer) => {
-    const isNewChat = answer && answer != submittedAnswer;
-    onAnswer({ answer: submittedAnswer, isNewChat, questionIndex });
+    const isAnswerChanged = answer && answer != submittedAnswer;
+    onAnswer({ answer: submittedAnswer, isAnswerChanged, questionIndex });
     setIsOpen(!isOpen);
   };
 
