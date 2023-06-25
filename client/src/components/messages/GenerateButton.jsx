@@ -8,7 +8,6 @@ export const GenerateButton = ({ onClick }) => {
   return (
     <Box
       sx={{
-        height: '10%',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center'

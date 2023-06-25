@@ -4,6 +4,9 @@ import Box from '@mui/material/Box';
 import { MessageQuestion } from './MessageQuestion';
 import { MessageAnswer } from './MessageAnswer';
 import { AnswerChoices } from './AnswerChoices';
+import { STATES } from '../../api/constants/messageState';
+import { MessageLoading } from './MessageLoading';
+import { MessageError } from './MessageError';
 
 const messageStyle = {
   display: 'flex',
@@ -12,19 +15,30 @@ const messageStyle = {
   marginBottom: '8px'
 };
 
-export const MessageRow = ({ message, onAnswer, questionIndex }) => {
+export const MessageRow = ({
+  message,
+  onAnswer,
+  questionIndex,
+  onGenerate
+}) => {
+  const { answer, state, imageUrl, question, choices } = message;
   const [isOpen, setIsOpen] = useState(!message.answer);
 
   const handleAnswerClick = () => {
     setIsOpen(!isOpen);
   };
 
-  const handleAnswerSubmit = (answer) => {
-    const isNewChat = message.answer && message.answer != answer;
-    onAnswer({ answer, isNewChat, questionIndex });
+  const handleAnswerSubmit = (submittedAnswer) => {
+    const isNewChat = answer && answer != submittedAnswer;
+    onAnswer({ answer: submittedAnswer, isNewChat, questionIndex });
     setIsOpen(!isOpen);
   };
-  if (message.imageUrl)
+
+  const handleGenerate = () => {
+    onGenerate(questionIndex);
+  };
+
+  if (imageUrl)
     return (
       <Box
         sx={{
@@ -38,18 +52,20 @@ export const MessageRow = ({ message, onAnswer, questionIndex }) => {
             justifyContent: 'center',
             alignItems: 'center'
           }}>
-          <MessageQuestion>{message.question}</MessageQuestion>
-          <MessageAnswer disabled={!message.answer} onClick={handleAnswerClick}>
-            {message.answer || 'Select answer'}
+          <MessageQuestion>{question}</MessageQuestion>
+          <MessageAnswer disabled={!answer} onClick={handleAnswerClick}>
+            {answer || 'Select answer'}
           </MessageAnswer>
         </Box>
         {isOpen && (
           <AnswerChoices
-            answer={message.answer}
-            choices={message.choices}
+            answer={answer}
+            choices={choices}
             onSubmit={handleAnswerSubmit}
+            onGenerate={handleGenerate}
           />
         )}
+        {state === STATES.LOADING && <MessageLoading />}
         <Box
           sx={{
             width: '310px',
@@ -65,8 +81,8 @@ export const MessageRow = ({ message, onAnswer, questionIndex }) => {
             borderRadius: '10px'
           }}>
           <img
-            src={message.imageUrl}
-            srcSet={message.imageUrl}
+            src={imageUrl}
+            srcSet={imageUrl}
             loading="lazy"
             style={{
               height: '300px',
@@ -92,30 +108,43 @@ export const MessageRow = ({ message, onAnswer, questionIndex }) => {
             justifyContent: 'center',
             alignItems: 'center'
           }}>
-          <MessageQuestion>{message.question}</MessageQuestion>
-          <MessageAnswer disabled={!message.answer} onClick={handleAnswerClick}>
-            {message.answer || 'Select answer'}
+          <MessageQuestion>{question}</MessageQuestion>
+          <MessageAnswer disabled={!answer} onClick={handleAnswerClick}>
+            {answer || 'Select answer'}
           </MessageAnswer>
         </Box>
-        {
-          <AnswerChoices
-            choices={message.choices}
-            answer={message.answer}
-            onSubmit={handleAnswerSubmit}
-          />
-        }
+        <AnswerChoices
+          choices={choices}
+          answer={answer}
+          onSubmit={handleAnswerSubmit}
+          onGenerate={handleGenerate}
+        />
+        {state === STATES.LOADING && <MessageLoading />}
+        {state === STATES.ERROR && <MessageError />}
       </Box>
     );
   }
 
   return (
-    <Box sx={{ ...messageStyle }}>
-      <MessageQuestion>{message.question}</MessageQuestion>
-      {message.answer && (
-        <MessageAnswer onClick={handleAnswerClick}>
-          {message.answer}
-        </MessageAnswer>
-      )}
+    <Box
+      sx={{
+        ...messageStyle,
+        flexDirection: 'column',
+        alignItems: 'flex-start'
+      }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}>
+        <MessageQuestion>{question}</MessageQuestion>
+        {answer && (
+          <MessageAnswer onClick={handleAnswerClick}>{answer}</MessageAnswer>
+        )}
+      </div>
+      {state === STATES.LOADING && <MessageLoading />}
+      {state === STATES.ERROR && <MessageError />}
     </Box>
   );
 };
@@ -126,8 +155,10 @@ MessageRow.propTypes = {
     answer: PropTypes.string,
     imageUrl: PropTypes.string,
     choices: PropTypes.arrayOf(PropTypes.string),
-    generatedPrompt: PropTypes.string
+    generatedPrompt: PropTypes.string,
+    state: PropTypes.string
   }),
   onAnswer: PropTypes.func,
+  onGenerate: PropTypes.func,
   questionIndex: PropTypes.number
 };
