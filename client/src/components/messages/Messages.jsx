@@ -16,7 +16,6 @@ export const Messages = ({ appState, messages = [], onAnswer, onGenerate }) => {
         flexDirection: 'column',
         alignItems: 'flex-start',
         overflowY: 'auto',
-        marginTop: 2
       }}
       id="scrollbar">
       {messages.map((message, index) => (

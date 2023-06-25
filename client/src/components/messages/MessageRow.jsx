@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
-import DownloadForOfflineIcon from '@mui/icons-material/DownloadForOffline' 
+import DownloadForOfflineIcon from '@mui/icons-material/DownloadForOffline'
 import { IconButton } from '@mui/material';
 import { saveAs } from "file-saver";
 import { MessageQuestion } from './MessageQuestion';
@@ -61,7 +61,7 @@ export const MessageRow = ({
           }}>
           <MessageQuestion>{question}</MessageQuestion>
           <MessageAnswer disabled={!answer} onClick={handleAnswerClick}>
-            {answer || 'Select answer'}
+            {answer ? answer.join(", ") : 'Select answer'}
           </MessageAnswer>
         </Box>
         {isOpen && (
@@ -98,7 +98,7 @@ export const MessageRow = ({
             }}
           />
           <IconButton
-            sx={{ color: 'rgba(255, 255, 255, 0.8)' }}
+            sx={{ color: '#7230C7', background: '#F5D8FF'}}
             onClick={handleDownloadClick}
             style={{
               position: 'absolute',
@@ -129,7 +129,7 @@ export const MessageRow = ({
           }}>
           <MessageQuestion>{question}</MessageQuestion>
           <MessageAnswer disabled={!answer} onClick={handleAnswerClick}>
-            {answer || 'Select answer'}
+            {answer ? answer.join(", ") : 'Select answer'}
           </MessageAnswer>
         </Box>
         <AnswerChoices
@@ -159,7 +159,7 @@ export const MessageRow = ({
         }}>
         <MessageQuestion>{question}</MessageQuestion>
         {answer && (
-          <MessageAnswer onClick={handleAnswerClick}>{answer}</MessageAnswer>
+          <MessageAnswer onClick={handleAnswerClick}>{answer ? answer.join(", ") : 'Select answer'}</MessageAnswer>
         )}
       </div>
       {state === STATES.LOADING && <MessageLoading />}
@@ -171,7 +171,7 @@ export const MessageRow = ({
 MessageRow.propTypes = {
   message: PropTypes.shape({
     question: PropTypes.string,
-    answer: PropTypes.string,
+    answer: PropTypes.arrayOf(PropTypes.string),
     imageUrl: PropTypes.string,
     choices: PropTypes.arrayOf(PropTypes.string),
     generatedPrompt: PropTypes.string,
