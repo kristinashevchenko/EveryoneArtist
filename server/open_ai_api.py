@@ -66,7 +66,7 @@ def quiz_next_turn(quiz: list[dict]) -> dict | bool:
 
 
 def quiz_generate_image(quiz: list[dict]) -> dict:
-    prompt = quiz_generate_prompt(quiz)
+    prompt = quiz_generate_prompt_with_gpt(quiz)
 
     response = openai.Image.create(
         prompt=prompt,
@@ -88,8 +88,39 @@ def quiz_generate_prompt(quiz: list[dict]) -> str:
     answer_list = [elem.get('answer')
                    for elem in quiz
                    if (
-                       (elem.get('answer') is not None) and
-                       (str(elem.get('answer')).lower() not in ["don't know", "yes", "no"])
+                           (elem.get('answer') is not None) and
+                           (str(elem.get('answer')).lower() not in ["don't know", "yes", "no"])
                    )
                    ]
     return " ".join(answer_list)
+
+
+def quiz_generate_prompt_with_gpt(quiz: list[dict]) -> str:
+
+    messages = []
+
+    for elem in quiz:
+        question = str(elem['question']) + "\n" + "|".join(elem["choices"])
+        messages.append({"role": "assistant", "content": question})
+
+        if elem.get('answer', False):
+            messages.append({"role": "user", "content": str(elem['answer'])})
+
+    messages.append({"role": "system", "content": "Create a basic prompt for an image generator of my given answers."})
+
+    while True:
+        try:
+            response = openai.ChatCompletion.create(
+                model='gpt-3.5-turbo',
+                max_tokens=30,
+                messages=messages
+            )
+            break
+        except openai.error.RateLimitError as e:
+            print(e)
+            time.sleep(18)
+
+    response_string = str(response["choices"][0]["message"]["content"])
+    print("ChatGPT response:", response_string)
+
+    return response_string
