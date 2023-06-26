@@ -4,7 +4,6 @@ import Box from '@mui/material/Box';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import { AppBar, Toolbar, Typography } from '@mui/material';
 import { ChatContainer } from '../../components/messages/ChatContainer';
 import { ImageNavigation } from '../../components/images/ImageNavigation';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,6 +12,8 @@ import {
   updateConversations
 } from '../../storage/reducers/conversation';
 import { getMessages } from '../../storage/session/utils';
+import { AppBar, Toolbar, Typography } from '@mui/material';
+import { Palette } from '@mui/icons-material';
 import { MODES } from '../../api/constants/modes';
 import './quiz.css';
 import { updateMode } from '../../storage/reducers/app';
@@ -52,14 +53,14 @@ export const QuizPage = () => {
       <AppBar
         position="static"
         sx={{
-          backgroundColor: '#7230C7',
+          background: 'linear-gradient(to right, #7230C7, #5B27A1FF)',
           height: '64px'
         }}>
-        <Toolbar
-          sx={{
-            justifyContent: 'space-between'
-          }}>
-          <Typography variant="h6">EveryoneArtist</Typography>
+        <Toolbar>
+          <Palette />
+          <Typography sx={{ marginLeft: '10px' }} variant="h6">
+            EveryoneArtist
+          </Typography>
           <FormControl
             variant="standard"
             sx={{
@@ -68,7 +69,8 @@ export const QuizPage = () => {
               display: 'flex',
               flexDirection: 'row',
               alignItems: 'center',
-              columnGap: '10px'
+              columnGap: '10px',
+              marginLeft: 'auto'
             }}>
             <div>Mode</div>
             <Select
@@ -96,11 +98,11 @@ export const QuizPage = () => {
           sx={{
             display: 'flex',
             flexDirection: 'column',
-            margin: '7px',
             backgroundColor: '#fffdfa',
             boxShadow: 'rgb(149 157 165 / 20%) 0px 8px 24px',
-            paddingLeft: '10px',
-            minHeight: 0
+            padding: 2,
+            minHeight: 0,
+            margin: '7px'
           }}>
           <ChatContainer />
         </Box>

@@ -62,9 +62,10 @@
     border-bottom: 2px solid #6A368A !important;
 }
 
-.MuiButton-root.submit-choice {
-    color: #6A368A !important;
-    border-color: #6A368A !important;
+.MuiIconButton-root.submit-choice {
+    border-radius: 40px !important;
+    border: 2px solid #C73800 !important;
+    background: #fffcbc;
 }
 
 .MuiButton-root.generate-button:hover {

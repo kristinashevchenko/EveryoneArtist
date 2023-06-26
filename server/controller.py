@@ -1,6 +1,7 @@
 import openai.error
+import requests
 from flask_cors import CORS
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_file, Response
 import open_ai_api
 
 app = Flask(__name__)
@@ -21,8 +22,26 @@ def quiz_answer():
 @app.route("/quiz/generate", methods=['POST'])
 def quiz_generate():
     quiz = request.get_json()
+    print(quiz)
     generated_data = open_ai_api.quiz_generate_image(quiz)
+
+    generated_data['imageUrl'] = 'http://localhost:5000/image/' + str(generated_data['imageUrl']).split("//", 1)[-1]
+
     return jsonify(generated_data)
+
+
+@app.route('/image/<path:custom_path>', methods=['GET'])
+def download_image(custom_path):
+    image_url = 'https://' + custom_path + '?' + request.query_string.decode()
+
+    response = requests.get(image_url, stream=True)
+    headers = {
+        'Content-Type': response.headers.get('Content-Type'),
+        'Content-Disposition': 'attachment;'
+    }
+
+    # Return a Flask response object with the streamed content
+    return Response(response.raw, headers=headers)
 
 
 @app.errorhandler(openai.error.OpenAIError)

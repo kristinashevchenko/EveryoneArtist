@@ -13,7 +13,9 @@ def quiz_next_turn(quiz: list[dict]) -> dict | bool:
                     "user. For every question give 5 possible answer options in following format: "
                     "option1|option2|option3|... The answer options should not be longer than two words and "
                     "should be singular. End your turn after asking one question. Do not stop asking questions until "
-                    "the user explicitly requests it. Do not ask yes or no questions."},
+                    "the user explicitly requests it. Do only ask open questions, without yes or no as answer option. "
+                    "Do not apologize yourself to the user. "
+                    "The user can select multiple answer options if he wants to draw multiple objects."},
         {"role": "system", "name": "example_assistant",
          "content": "Question?\noption1|option2|option3|option4|option5"}
     ]
@@ -23,9 +25,43 @@ def quiz_next_turn(quiz: list[dict]) -> dict | bool:
         messages.append({"role": "assistant", "content": question})
 
         if elem.get('answer', False):
-            messages.append({"role": "user", "content": str(elem['answer'])})
+            answer = elem['answer']
+            if type(answer) is list:
+                answer = "&".join(answer)
+            messages.append({"role": "user", "content": str(answer)})
 
-    while True:
+    max_tries = 3
+    next_conversation_element = False
+    for i in range(max_tries):
+        try:
+            next_conversation_element = get_next_conversation_element(messages)
+            break
+        except ResponseFormatException:
+            messages.append({"role": "system",
+                             "content": "Stick strictly to following format for your response: "
+                             "Question?\noption1|option2|option3|option4|option5 "
+                             "Do not apologize yourself for this mistake."})
+        except YesNoQuestionException:
+            messages.append({"role": "system",
+                            "content": "Do only ask open questions, without yes or no as answer option. "
+                                       "Do not apologize yourself for this mistake. "
+                                       "Stick strictly to following format for your response: "
+                                       "Question?\noption1|option2|option3|option4|option5"})
+
+    return next_conversation_element
+
+
+class ResponseFormatException(Exception):
+    pass
+
+
+class YesNoQuestionException(Exception):
+    pass
+
+
+def get_next_conversation_element(messages):
+    response = False
+    for i in range(3):
         try:
             response = openai.ChatCompletion.create(
                 model='gpt-3.5-turbo',
@@ -37,13 +73,19 @@ def quiz_next_turn(quiz: list[dict]) -> dict | bool:
             print(e)
             time.sleep(18)
 
+    if not response:
+        return False
+
     response_string = str(response["choices"][0]["message"]["content"])
     print("ChatGPT response:", response_string)
 
     response_list = response_string.split("\n", 2)
 
     if len(response_list) < 2:
-        return False
+        raise ResponseFormatException
+
+    # if "yes" in response_list[1].lower() or "no" in response_list[1].lower():
+    #    raise YesNoQuestionException
 
     question = response_list[0]
     answer_options = response_list[1].split("|")
@@ -54,7 +96,7 @@ def quiz_next_turn(quiz: list[dict]) -> dict | bool:
                       ]
 
     if len(answer_options) < 2:
-        return False
+        raise ResponseFormatException
 
     next_conversation_element = {
         "question": question,
@@ -87,40 +129,19 @@ def quiz_generate_image(quiz: list[dict]) -> dict:
 def quiz_generate_prompt(quiz: list[dict]) -> str:
     answer_list = [elem.get('answer')
                    for elem in quiz
-                   if (
-                           (elem.get('answer') is not None) and
-                           (str(elem.get('answer')).lower() not in ["don't know", "yes", "no"])
-                   )
+                   if (elem.get('answer') is not None)
                    ]
-    return " ".join(answer_list)
 
+    answer_strings = []
+    for answer in answer_list:
+        if type(answer) == str:
+            answer_strings.append(answer.lower())
+        elif type(answer) == list:
+            answer_strings = answer_strings + answer
 
-def quiz_generate_prompt_with_gpt(quiz: list[dict]) -> str:
-    messages = []
+    answer_strings_filtered = []
+    for answer in answer_strings:
+        if (answer is not None) and (answer.lower() not in ["don't know", "yes", "no"]):
+            answer_strings_filtered.append(answer)
 
-    for elem in quiz:
-
-        if elem.get('answer', False):
-            messages.append({"role": "user", "content": str(elem['answer'])})
-
-    messages.append({"role": "system",
-                     "content": "Create a prompt for an image generator from my given answers. "
-                                "The response should be basic, one sentence and only contain "
-                                "my answers."})
-
-    while True:
-        try:
-            response = openai.ChatCompletion.create(
-                model='gpt-3.5-turbo',
-                max_tokens=30,
-                messages=messages
-            )
-            break
-        except openai.error.RateLimitError as e:
-            print(e)
-            time.sleep(18)
-
-    response_string = str(response["choices"][0]["message"]["content"])
-    print("ChatGPT response:", response_string)
-
-    return response_string
+    return " ".join(answer_strings_filtered)
