@@ -66,7 +66,7 @@ def quiz_next_turn(quiz: list[dict]) -> dict | bool:
 
 
 def quiz_generate_image(quiz: list[dict]) -> dict:
-    prompt = quiz_generate_prompt_with_gpt(quiz)
+    prompt = quiz_generate_prompt(quiz)
 
     response = openai.Image.create(
         prompt=prompt,
@@ -96,17 +96,17 @@ def quiz_generate_prompt(quiz: list[dict]) -> str:
 
 
 def quiz_generate_prompt_with_gpt(quiz: list[dict]) -> str:
-
     messages = []
 
     for elem in quiz:
-        question = str(elem['question']) + "\n" + "|".join(elem["choices"])
-        messages.append({"role": "assistant", "content": question})
 
         if elem.get('answer', False):
             messages.append({"role": "user", "content": str(elem['answer'])})
 
-    messages.append({"role": "system", "content": "Create a basic prompt for an image generator of my given answers."})
+    messages.append({"role": "system",
+                     "content": "Create a prompt for an image generator from my given answers. "
+                                "The response should be basic, one sentence and only contain "
+                                "my answers."})
 
     while True:
         try:
