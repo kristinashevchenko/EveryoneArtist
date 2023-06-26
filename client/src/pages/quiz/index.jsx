@@ -12,8 +12,8 @@ import {
   updateConversations
 } from '../../storage/reducers/conversation';
 import { getMessages } from '../../storage/session/utils';
-import {AppBar, Toolbar, Typography} from "@mui/material";
-import {Brush, Palette} from "@mui/icons-material";
+import { AppBar, Toolbar, Typography } from '@mui/material';
+import { Palette } from '@mui/icons-material';
 import { MODES } from '../../api/constants/modes';
 import './quiz.css';
 import { updateMode } from '../../storage/reducers/app';
@@ -57,8 +57,10 @@ export const QuizPage = () => {
           height: '64px'
         }}>
         <Toolbar>
-        <Palette/>
-        <Typography sx={{ marginLeft: '10px' }} variant="h6">EveryoneArtist</Typography>
+          <Palette />
+          <Typography sx={{ marginLeft: '10px' }} variant="h6">
+            EveryoneArtist
+          </Typography>
           <FormControl
             variant="standard"
             sx={{
@@ -99,11 +101,12 @@ export const QuizPage = () => {
             backgroundColor: '#fffdfa',
             boxShadow: 'rgb(149 157 165 / 20%) 0px 8px 24px',
             padding: 2,
-            minHeight: 0
+            minHeight: 0,
+            margin: '7px'
           }}>
           <ChatContainer />
         </Box>
-        <Box gridColumn="span 2" sx={{ height: '100%' }}>
+        <Box gridColumn="span 2" sx={{ height: '100%', minHeight: 0 }}>
           <ImageNavigation />
         </Box>
       </Box>

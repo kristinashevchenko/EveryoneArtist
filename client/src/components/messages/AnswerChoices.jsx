@@ -5,8 +5,8 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Input from '@mui/material/Input';
 import './styles.css';
-import {AddAPhoto, AddPhotoAlternate, PhotoFilter, Send} from "@mui/icons-material";
-import {IconButton} from "@mui/material";
+import { AddPhotoAlternate, Send } from '@mui/icons-material';
+import { IconButton } from '@mui/material';
 
 const DONT_KNOW = "Don't know";
 const OTHER = 'Other';
@@ -15,10 +15,17 @@ const choiceButton = {
   backgroundColor: 'rgba(190, 198, 255, 0.44)'
 };
 
-export const AnswerChoices = ({ choices, onSubmit, answer, onGenerate = [] }) => {
-  const initialOther = answer ? answer.filter(x => !choices.includes(x)).filter(x => x !== DONT_KNOW).join(" ") : "";
+export const AnswerChoices = ({ choices, onSubmit, answer, onGenerate }) => {
+  const initialOther = answer
+    ? answer
+        .filter((x) => !choices.includes(x))
+        .filter((x) => x !== DONT_KNOW)
+        .join(' ')
+    : '';
   const [selected, setSelected] = useState(
-       initialOther ? answer.filter(x => choices.includes(x)).concat(OTHER) : answer
+    initialOther
+      ? answer.filter((x) => choices.includes(x)).concat(OTHER)
+      : answer
   );
   const [text, setText] = useState(initialOther);
 
@@ -34,7 +41,7 @@ export const AnswerChoices = ({ choices, onSubmit, answer, onGenerate = [] }) =>
     let result = [];
     if (selected.includes(OTHER) && text) result.push(text);
     if (selected) result.push(...selected);
-    result = result.filter(x => x !== OTHER).filter(x => x !== undefined);
+    result = result.filter((x) => x !== OTHER).filter((x) => x !== undefined);
     if (result.length > 0) onSubmit(result);
   };
 
@@ -68,34 +75,31 @@ export const AnswerChoices = ({ choices, onSubmit, answer, onGenerate = [] }) =>
           sx={choiceButton}>
           {DONT_KNOW}
         </ToggleButton>
-        <ToggleButton
-        className="choice-button"
-        sx={choiceButton}
-        value={OTHER}>
-            <Input
-                className="choice-input"
-                sx={{ marginLeft: '10px' }}
-                value={text}
-                placeholder="Other"
-                onChange={handleInputChange}
-            />
+        <ToggleButton className="choice-button" sx={choiceButton} value={text}>
+          <Input
+            className="choice-input"
+            sx={{ marginLeft: '10px' }}
+            value={text}
+            placeholder="Other"
+            onChange={handleInputChange}
+          />
         </ToggleButton>
       </ToggleButtonGroup>
       <Box sx={{ marginLeft: '10px' }}>
-          <IconButton
-              onClick={handleSubmit}
-              color='secondary'
-              className="submit-choice"
-              sx={{ marginLeft: '10px' }}>
-              <Send/>
-          </IconButton>
-          <IconButton
-              onClick={onGenerate}
-              color='secondary'
-              className="submit-choice"
-              sx={{ marginLeft: '10px' }}>
-              <AddPhotoAlternate/>
-          </IconButton>
+        <IconButton
+          onClick={handleSubmit}
+          color="secondary"
+          className="submit-choice"
+          sx={{ marginLeft: '10px' }}>
+          <Send />
+        </IconButton>
+        <IconButton
+          onClick={onGenerate}
+          color="secondary"
+          className="submit-choice"
+          sx={{ marginLeft: '10px' }}>
+          <AddPhotoAlternate />
+        </IconButton>
       </Box>
     </Box>
   );

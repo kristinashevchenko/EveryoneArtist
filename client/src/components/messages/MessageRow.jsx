@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
-import DownloadForOfflineIcon from '@mui/icons-material/DownloadForOffline'
+import DownloadForOfflineIcon from '@mui/icons-material/DownloadForOffline';
 import { IconButton } from '@mui/material';
-import { saveAs } from "file-saver";
+import { saveAs } from 'file-saver';
 import { MessageQuestion } from './MessageQuestion';
 import { MessageAnswer } from './MessageAnswer';
 import { AnswerChoices } from './AnswerChoices';
@@ -42,8 +42,8 @@ export const MessageRow = ({
   };
 
   const handleDownloadClick = () => {
-    saveAs(imageUrl, "filename");
-  }
+    saveAs(imageUrl, 'filename');
+  };
 
   if (imageUrl)
     return (
@@ -61,7 +61,7 @@ export const MessageRow = ({
           }}>
           <MessageQuestion>{question}</MessageQuestion>
           <MessageAnswer disabled={!answer} onClick={handleAnswerClick}>
-            {answer ? answer.join(", ") : 'Select answer'}
+            {answer ? answer.join(', ') : 'Select answer'}
           </MessageAnswer>
         </Box>
         {isOpen && (
@@ -98,15 +98,15 @@ export const MessageRow = ({
             }}
           />
           <IconButton
-            sx={{ color: '#7230C7', background: '#F5D8FF'}}
+            sx={{ color: '#7230C7', background: '#F5D8FF' }}
             onClick={handleDownloadClick}
             style={{
               position: 'absolute',
               top: 10,
-              right: 10,
+              right: 10
             }}>
-              <DownloadForOfflineIcon/>
-            </IconButton>
+            <DownloadForOfflineIcon />
+          </IconButton>
 
           <span style={{ marginLeft: 5 }}>{message.generatedPrompt}</span>
         </Box>
@@ -129,7 +129,7 @@ export const MessageRow = ({
           }}>
           <MessageQuestion>{question}</MessageQuestion>
           <MessageAnswer disabled={!answer} onClick={handleAnswerClick}>
-            {answer ? answer.join(", ") : 'Select answer'}
+            {answer ? answer.join(', ') : 'Select answer'}
           </MessageAnswer>
         </Box>
         <AnswerChoices
@@ -159,7 +159,9 @@ export const MessageRow = ({
         }}>
         <MessageQuestion>{question}</MessageQuestion>
         {answer && (
-          <MessageAnswer onClick={handleAnswerClick}>{answer ? answer.join(", ") : 'Select answer'}</MessageAnswer>
+          <MessageAnswer onClick={handleAnswerClick}>
+            {answer ? answer.join(', ') : 'Select answer'}
+          </MessageAnswer>
         )}
       </div>
       {state === STATES.LOADING && <MessageLoading />}
