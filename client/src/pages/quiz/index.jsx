@@ -106,7 +106,14 @@ export const QuizPage = () => {
           }}>
           <ChatContainer />
         </Box>
-        <Box gridColumn="span 2" sx={{ height: '100%', minHeight: 0 }}>
+        <Box 
+          gridColumn="span 2" 
+          sx={{ 
+            height: '100%', 
+            minHeight: 0,
+            paddingTop: 2,
+            paddingBottom: 2,
+          }}>
           <ImageNavigation />
         </Box>
       </Box>
