@@ -90,13 +90,17 @@ export const AnswerChoices = ({ choices, onSubmit, answer, onGenerate }) => {
           onClick={handleSubmit}
           color="secondary"
           className="submit-choice"
+          title="Submit"
+          disabled={selected ? !selected.length : true}
           sx={{ marginLeft: '10px' }}>
           <Send />
         </IconButton>
         <IconButton
+          disabled={!answer}
           onClick={onGenerate}
           color="secondary"
           className="submit-choice"
+          title="Generate"
           sx={{ marginLeft: '10px' }}>
           <AddPhotoAlternate />
         </IconButton>
