@@ -44,9 +44,7 @@ export const MessageRow = ({
         isAnswerChanged = true;
       }
     }
-    // do nothing if answers the same and message has no error
-    if (isAnswerChanged || state === STATES.ERROR)
-      onAnswer({ answer: submittedAnswer, isAnswerChanged, questionIndex });
+    onAnswer({ answer: submittedAnswer, isAnswerChanged, questionIndex });
     setIsOpen(!isOpen);
   };
 

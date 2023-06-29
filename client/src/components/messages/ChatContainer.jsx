@@ -39,7 +39,14 @@ export const ChatContainer = () => {
       switch (mode) {
         case MODES.DESTRUCTIVE_MODE:
           // start new chat
-          dispatch(forkChat({ answer, questionIndex, messages }));
+          dispatch(
+            forkChat({
+              answer,
+              questionIndex,
+              messages,
+              activeConversationId: conversationsLength
+            })
+          );
           break;
         case MODES.CHANGE_MODE:
           // update chat, don't retrigger BE, don't remove image
@@ -49,7 +56,7 @@ export const ChatContainer = () => {
           break;
       }
     } else {
-      dispatch(sendMessage({ answer, messages }));
+      dispatch(sendMessage({ answer, messages, activeConversationId }));
     }
   };
 
