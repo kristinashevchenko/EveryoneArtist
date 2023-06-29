@@ -7,7 +7,13 @@ import { MessageError } from './MessageError';
 import { MessageRow } from './MessageRow';
 import './styles.css';
 
-export const Messages = ({ appState, messages = [], onAnswer, onGenerate }) => {
+export const Messages = ({
+  appState,
+  messages = [],
+  onAnswer,
+  onGenerate,
+  onRetry
+}) => {
   return (
     <Box
       sx={{
@@ -15,7 +21,7 @@ export const Messages = ({ appState, messages = [], onAnswer, onGenerate }) => {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'flex-start',
-        overflowY: 'auto',
+        overflowY: 'auto'
       }}
       id="scrollbar">
       {messages.map((message, index) => (
@@ -28,7 +34,7 @@ export const Messages = ({ appState, messages = [], onAnswer, onGenerate }) => {
         />
       ))}
       {appState === STATES.LOADING && <MessageLoading />}
-      {appState === STATES.ERROR && <MessageError />}
+      {appState === STATES.ERROR && <MessageError onRetry={onRetry} />}
     </Box>
   );
 };
@@ -37,5 +43,6 @@ Messages.propTypes = {
   messages: PropTypes.arrayOf(PropTypes.object),
   onAnswer: PropTypes.func,
   onGenerate: PropTypes.func,
-  appState: PropTypes.string
+  appState: PropTypes.string,
+  onRetry: PropTypes.func
 };

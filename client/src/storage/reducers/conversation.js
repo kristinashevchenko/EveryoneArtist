@@ -7,23 +7,28 @@ import { STATES } from '../../api/constants/states';
 const initialState = {
   userId: '',
   activeConversationId: 0,
-  conversations: []
+  conversations: [],
+  states: {}
 };
 
 export const sendMessage = createAsyncThunk(
   'conversations/sendMessage',
   async (action) => {
-    const { answer, messages } = action;
+    const { answer, messages, activeConversationId } = action;
     const response = await api.sendMessage({ answer, messages });
-    return response;
+    return { message: response, activeConversationId };
   }
 );
 
 export const forkChat = createAsyncThunk(
   'conversations/forkChat',
-  async ({ answer, questionIndex, messages }) => {
-    const newChat = await api.forkChat({ answer, messages, questionIndex });
-    return newChat;
+  async ({ answer, questionIndex, messages, activeConversationId }) => {
+    const newChat = await api.forkChat({
+      answer,
+      messages,
+      questionIndex
+    });
+    return { messages: newChat, activeConversationId };
   }
 );
 
@@ -58,24 +63,22 @@ export const conversationSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(sendMessage.pending, (state, action) => {
-        const { answer } = action.meta.arg;
-        const activeConversation =
-          state.conversations[state.activeConversationId];
+        const { answer, activeConversationId } = action.meta.arg;
+        const activeConversation = state.conversations[activeConversationId];
         activeConversation[activeConversation.length - 1].answer = answer;
         activeConversation[activeConversation.length - 1].state =
           STATES.LOADING;
       })
       .addCase(sendMessage.fulfilled, (state, action) => {
-        const newMessage = action.payload;
-        const activeConversation =
-          state.conversations[state.activeConversationId];
+        const { message: newMessage, activeConversationId } = action.payload;
+        const activeConversation = state.conversations[activeConversationId];
         activeConversation[activeConversation.length - 1].state = STATES.READY;
         activeConversation.push(newMessage);
         setMessages({ messages: state.conversations, userId: state.userId });
       })
-      .addCase(sendMessage.rejected, (state) => {
-        const activeConversation =
-          state.conversations[state.activeConversationId];
+      .addCase(sendMessage.rejected, (state, action) => {
+        const { activeConversationId } = action.meta.arg;
+        const activeConversation = state.conversations[activeConversationId];
         activeConversation[activeConversation.length - 1].state = STATES.ERROR;
       })
       .addCase(generateImage.pending, (state, action) => {
@@ -84,41 +87,51 @@ export const conversationSlice = createSlice({
         activeConversation[questionIndex].state = STATES.LOADING;
       })
       .addCase(generateImage.rejected, (state, action) => {
-        const { questionIndex } = action.meta.arg;
-        const activeConversation =
-          state.conversations[state.activeConversationId];
+        const { questionIndex, conversationId } = action.meta.arg;
+        const activeConversation = state.conversations[conversationId];
         activeConversation[questionIndex].state = STATES.ERROR;
       })
       .addCase(generateImage.fulfilled, (state, action) => {
-        const { imageUrl, generatedPrompt, questionIndex } = action.payload;
-        const activeConversation =
-          state.conversations[state.activeConversationId];
+        const { imageUrl, generatedPrompt, questionIndex, conversationId } =
+          action.payload;
+        const activeConversation = state.conversations[conversationId];
         activeConversation[questionIndex].imageUrl = imageUrl;
         activeConversation[questionIndex].generatedPrompt = generatedPrompt;
         activeConversation[questionIndex].state = STATES.READY;
         setMessages({ messages: state.conversations, userId: state.userId });
       })
-      .addCase(forkChat.pending, (state) => {
+      .addCase(forkChat.pending, (state, action) => {
+        const { activeConversationId } = action.meta.arg;
         state.conversations.push([]);
-        state.activeConversationId = state.conversations.length - 1;
+        state.activeConversationId = activeConversationId;
+        state.states[activeConversationId] = STATES.LOADING;
+      })
+      .addCase(forkChat.rejected, (state, action) => {
+        const { activeConversationId } = action.meta.arg;
+        state.states[activeConversationId] = STATES.ERROR;
       })
       .addCase(forkChat.fulfilled, (state, action) => {
-        const newConversation = action.payload;
-        state.conversations[state.activeConversationId] =
-          state.conversations[state.activeConversationId].concat(
-            newConversation
-          );
+        const { messages: newConversation, activeConversationId } =
+          action.payload;
+        state.conversations[activeConversationId] =
+          state.conversations[activeConversationId].concat(newConversation);
+        state.states[activeConversationId] = STATES.READY;
         setMessages({ messages: state.conversations, userId: state.userId });
       })
       .addCase(startChat.pending, (state, action) => {
         const { userId } = action.meta.arg;
         state.userId = userId;
+        state.states[0] = STATES.LOADING;
+      })
+      .addCase(startChat.rejected, (state) => {
+        state.states[0] = STATES.ERROR;
       })
       .addCase(startChat.fulfilled, (state, action) => {
         const newMessage = action.payload;
         const newConversation = [newMessage];
         state.conversations.push(newConversation);
         state.activeConversationId = state.conversations.length - 1;
+        state.states[0] = STATES.READY;
         setMessages({ messages: state.conversations, userId: state.userId });
       });
   }
