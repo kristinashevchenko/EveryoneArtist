@@ -32,21 +32,8 @@ export const MessageRow = ({
   };
 
   const handleAnswerSubmit = (submittedAnswer) => {
-    let isAnswerChanged = false;
-
-    // check array of answers
-    if (answer) {
-      if (submittedAnswer.length === answer.length)
-        isAnswerChanged = !submittedAnswer.every((currentValue) => {
-          return answer.includes(currentValue);
-        });
-      else {
-        isAnswerChanged = true;
-      }
-    }
-    // do nothing if answers the same and message has no error
-    if (isAnswerChanged || state === STATES.ERROR)
-      onAnswer({ answer: submittedAnswer, isAnswerChanged, questionIndex });
+    const isAnswerChanged = answer && answer != submittedAnswer;
+    onAnswer({ answer: submittedAnswer, isAnswerChanged, questionIndex });
     setIsOpen(!isOpen);
   };
 

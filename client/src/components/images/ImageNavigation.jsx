@@ -5,6 +5,7 @@ import { ImageListItemBar } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateActiveConversation } from '../../storage/reducers/conversation';
 import DefaultImage from './no_image.jpg';
+import { transform } from 'lodash';
 
 export const ImageNavigation = () => {
   const dispatch = useDispatch();
@@ -17,18 +18,16 @@ export const ImageNavigation = () => {
     dispatch(updateActiveConversation({ newConversationId: conversationId }));
   };
 
-  const imageListStyle =
-    images.length <= 3 ? { height: 'fit-content' } : { height: '100%' };
+  const imageListStyle = images.length <= 3 ? {height: 'fit-content'} : {height: '100%'};
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100%',
-        width: '100%',
-        overflowY: 'auto'
+    <div style={{ 
+      display: 'flex', 
+      justifyContent: 'center', 
+      alignItems: 'center', 
+      height: '100%',
+      width: '100%',
+      overflowY: 'auto'
       }}>
       <ImageList
         sx={{
@@ -41,17 +40,11 @@ export const ImageNavigation = () => {
         rowHeight={180}>
         {images.map((image, index) => (
           <ImageListItem
-            key={image.imageUrl || index}
+            key={image.imageUrl}
             sx={{
               width: '180px',
-              border:
-                index === activeConversationId
-                  ? '4px solid #8034eb'
-                  : '4px solid transparent',
-              boxShadow:
-                index === activeConversationId
-                  ? '0px 0px 10px 3px rgba(0,0,0,0.25)'
-                  : 'none',
+              border: index === activeConversationId ? '4px solid #8034eb' : '4px solid transparent',
+              boxShadow: index === activeConversationId ? '0px 0px 10px 3px rgba(0,0,0,0.25)' : 'none',
               borderRadius: '15px',
               margin: 2,
               boxSizing: 'border-box',
@@ -68,19 +61,19 @@ export const ImageNavigation = () => {
               alt={image.generatedPrompt}
               title={image.generatedPrompt}
               loading="lazy"
-              style={{ borderRadius: '11px' }}
+              style={{borderRadius: '11px'}}
             />
-            <ImageListItemBar
+            <ImageListItemBar 
               sx={{
                 '.MuiImageListItemBar-title': {
                   whiteSpace: 'normal',
                   fontSize: '14px',
                   lineHeight: '20px',
                   textAlign: 'center'
-                }
+                },
               }}
-              title={image.generatedPrompt}
-              style={{ borderRadius: '11px' }}
+              title={image.generatedPrompt} 
+              style={{borderRadius: '11px'}}
             />
           </ImageListItem>
         ))}

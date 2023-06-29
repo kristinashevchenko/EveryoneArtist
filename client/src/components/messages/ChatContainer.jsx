@@ -5,23 +5,17 @@ import { generateImage } from '../../storage/reducers/image';
 import {
   sendMessage,
   forkChat,
-  updateChat,
-  startChat
+  updateChat
 } from '../../storage/reducers/conversation';
-import {
-  selectConversationsLength,
-  selectMessages
-} from '../../storage/selectors';
+import { selectMessages } from '../../storage/selectors';
 import { MODES } from '../../api/constants/modes';
 
 export const ChatContainer = () => {
   const dispatch = useDispatch();
-  const activeConversationId =
-    useSelector((state) => state.conversations.activeConversationId) || 0;
-  const userId = useSelector((state) => state.conversations.userId);
-  const conversationsLength = useSelector(selectConversationsLength);
-  const appStates = useSelector((state) => state.conversations.states);
-  const appState = appStates[activeConversationId];
+  const activeConversationId = useSelector(
+    (state) => state.conversations.activeConversationId
+  );
+  const appState = useSelector((state) => state.app.state);
   const mode = useSelector((state) => state.app.mode);
   const messages = useSelector(selectMessages);
   const onGenerate = (questionIndex) => {
@@ -53,17 +47,12 @@ export const ChatContainer = () => {
     }
   };
 
-  const onRetry = () => {
-    dispatch(startChat({ userId }));
-  };
-
   return (
     <Messages
       appState={appState}
       messages={messages}
       onAnswer={onAnswer}
       onGenerate={onGenerate}
-      onRetry={conversationsLength ? null : onRetry}
     />
   );
 };

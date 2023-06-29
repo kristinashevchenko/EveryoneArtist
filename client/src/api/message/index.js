@@ -25,8 +25,7 @@ export const forkChat = async ({ answer, messages, questionIndex }) => {
   newMessages = newMessages.map((message) => ({
     ...message,
     imageUrl: '',
-    generatedPrompt: '',
-    state: ''
+    generatedPrompt: ''
   }));
 
   const { data } = await axios.post(

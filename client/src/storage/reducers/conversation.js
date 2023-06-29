@@ -7,8 +7,7 @@ import { STATES } from '../../api/constants/states';
 const initialState = {
   userId: '',
   activeConversationId: 0,
-  conversations: [],
-  states: {}
+  conversations: []
 };
 
 export const sendMessage = createAsyncThunk(
@@ -23,11 +22,7 @@ export const sendMessage = createAsyncThunk(
 export const forkChat = createAsyncThunk(
   'conversations/forkChat',
   async ({ answer, questionIndex, messages }) => {
-    const newChat = await api.forkChat({
-      answer,
-      messages,
-      questionIndex
-    });
+    const newChat = await api.forkChat({ answer, messages, questionIndex });
     return newChat;
   }
 );
@@ -106,10 +101,6 @@ export const conversationSlice = createSlice({
       .addCase(forkChat.pending, (state) => {
         state.conversations.push([]);
         state.activeConversationId = state.conversations.length - 1;
-        state.states[state.activeConversationId] = STATES.LOADING;
-      })
-      .addCase(forkChat.rejected, (state) => {
-        state.states[state.activeConversationId] = STATES.ERROR;
       })
       .addCase(forkChat.fulfilled, (state, action) => {
         const newConversation = action.payload;
@@ -117,23 +108,17 @@ export const conversationSlice = createSlice({
           state.conversations[state.activeConversationId].concat(
             newConversation
           );
-        state.states[state.activeConversationId] = STATES.READY;
         setMessages({ messages: state.conversations, userId: state.userId });
       })
       .addCase(startChat.pending, (state, action) => {
         const { userId } = action.meta.arg;
         state.userId = userId;
-        state.states[0] = STATES.LOADING;
-      })
-      .addCase(startChat.rejected, (state) => {
-        state.states[0] = STATES.ERROR;
       })
       .addCase(startChat.fulfilled, (state, action) => {
         const newMessage = action.payload;
         const newConversation = [newMessage];
         state.conversations.push(newConversation);
         state.activeConversationId = state.conversations.length - 1;
-        state.states[0] = STATES.READY;
         setMessages({ messages: state.conversations, userId: state.userId });
       });
   }
