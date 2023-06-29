@@ -75,7 +75,7 @@ export const AnswerChoices = ({ choices, onSubmit, answer, onGenerate }) => {
           sx={choiceButton}>
           {DONT_KNOW}
         </ToggleButton>
-        <ToggleButton className="choice-button" sx={choiceButton} value={text}>
+        <ToggleButton className="choice-button" sx={choiceButton} value={OTHER}>
           <Input
             className="choice-input"
             sx={{ marginLeft: '10px' }}
