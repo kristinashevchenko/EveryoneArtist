@@ -15,6 +15,7 @@ def quiz_next_turn(quiz: list[dict]) -> dict | bool:
                     "should be singular. End your turn after asking one question. Do not stop asking questions until "
                     "the user explicitly requests it. Do only ask open questions, without yes or no as answer option. "
                     "Do not apologize yourself to the user. "
+                    "Always start the conversation by asking which style of an image the user wants to create. "
                     "The user can select multiple answer options if he wants to draw multiple objects."},
         {"role": "system", "name": "example_assistant",
          "content": "Question?\noption1|option2|option3|option4|option5"}
