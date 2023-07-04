@@ -12,7 +12,6 @@ export const MessageQuestion = ({ children }) => {
         backgroundColor: '#B4F2A5',
         borderRadius: '15px',
         padding: '10px',
-        height: '24px',
         marginRight: '15px',
         maxWidth: '500px',
         textOverflow: 'ellipsis',
