@@ -56,7 +56,7 @@ The server will start running at `http://localhost:5000`.
 Before running the client locally, please make sure you have the following installed:
 
 1. NPM
-2. Node (at least version 14)
+2. Node (at least version 14). If you have [NVM](https://github.com/nvm-sh/nvm) installed, you can run `nvm use` (probably you still need to download version through NVM).
 
 For more information, refer to the [official NPM documentation](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
 
