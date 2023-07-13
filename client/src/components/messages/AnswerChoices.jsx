@@ -5,7 +5,7 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Input from '@mui/material/Input';
 import './styles.css';
-import { AddPhotoAlternate, Send } from '@mui/icons-material';
+import { Send } from '@mui/icons-material';
 import { IconButton } from '@mui/material';
 
 const DONT_KNOW = "Don't know";
@@ -15,7 +15,7 @@ const choiceButton = {
   backgroundColor: 'rgba(190, 198, 255, 0.44)'
 };
 
-export const AnswerChoices = ({ choices, onSubmit, answer, onGenerate }) => {
+export const AnswerChoices = ({ choices, onSubmit, answer }) => {
   const initialOther = answer
     ? answer
         .filter((x) => !choices.includes(x))
@@ -95,15 +95,6 @@ export const AnswerChoices = ({ choices, onSubmit, answer, onGenerate }) => {
           sx={{ marginLeft: '10px' }}>
           <Send />
         </IconButton>
-        <IconButton
-          disabled={!answer}
-          onClick={onGenerate}
-          color="secondary"
-          className="submit-choice"
-          title="Generate"
-          sx={{ marginLeft: '10px' }}>
-          <AddPhotoAlternate />
-        </IconButton>
       </Box>
     </Box>
   );
@@ -112,6 +103,5 @@ export const AnswerChoices = ({ choices, onSubmit, answer, onGenerate }) => {
 AnswerChoices.propTypes = {
   choices: PropTypes.arrayOf(PropTypes.string),
   onSubmit: PropTypes.func,
-  answer: PropTypes.arrayOf(PropTypes.string),
-  onGenerate: PropTypes.func
+  answer: PropTypes.arrayOf(PropTypes.string)
 };
