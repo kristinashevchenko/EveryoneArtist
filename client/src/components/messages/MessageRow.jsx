@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import DownloadForOfflineIcon from '@mui/icons-material/DownloadForOffline';
+import { AddPhotoAlternate } from '@mui/icons-material';
 import { IconButton } from '@mui/material';
 import { saveAs } from 'file-saver';
 import { MessageQuestion } from './MessageQuestion';
@@ -74,13 +75,21 @@ export const MessageRow = ({
           <MessageAnswer disabled={!answer} onClick={handleAnswerClick}>
             {answer ? answer.join(', ') : 'Select answer'}
           </MessageAnswer>
+          <IconButton
+            disabled={!answer}
+            onClick={handleGenerate}
+            color="secondary"
+            className="submit-choice"
+            title="Generate"
+            sx={{ marginLeft: '10px' }}>
+            <AddPhotoAlternate />
+          </IconButton>
         </Box>
         {isOpen && (
           <AnswerChoices
             answer={answer}
             choices={choices}
             onSubmit={handleAnswerSubmit}
-            onGenerate={handleGenerate}
           />
         )}
         {state === STATES.LOADING && <MessageLoading />}
@@ -142,12 +151,20 @@ export const MessageRow = ({
           <MessageAnswer disabled={!answer} onClick={handleAnswerClick}>
             {answer ? answer.join(', ') : 'Select answer'}
           </MessageAnswer>
+          <IconButton
+            disabled={!answer}
+            onClick={handleGenerate}
+            color="secondary"
+            className="submit-choice"
+            title="Generate"
+            sx={{ marginLeft: '10px' }}>
+            <AddPhotoAlternate />
+          </IconButton>
         </Box>
         <AnswerChoices
           choices={choices}
           answer={answer}
           onSubmit={handleAnswerSubmit}
-          onGenerate={handleGenerate}
         />
         {state === STATES.LOADING && <MessageLoading />}
         {state === STATES.ERROR && <MessageError />}
@@ -174,6 +191,15 @@ export const MessageRow = ({
             {answer ? answer.join(', ') : 'Select answer'}
           </MessageAnswer>
         )}
+        <IconButton
+          disabled={!answer}
+          onClick={handleGenerate}
+          color="secondary"
+          className="submit-choice"
+          title="Generate"
+          sx={{ marginLeft: '10px' }}>
+          <AddPhotoAlternate />
+        </IconButton>
       </div>
       {state === STATES.LOADING && <MessageLoading />}
       {state === STATES.ERROR && <MessageError />}
